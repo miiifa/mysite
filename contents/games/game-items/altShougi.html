@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="altS.css">
+    <meta charset="UTF-8" />
+    <title>Gomoku</title>
+    <script src="http://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+
+    <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
+  <script src="http://cdn.jsdelivr.net/npm/vue"></script>
+  <link rel="stylesheet" href="./stylesheets/normalize.css">
+  <link rel="stylesheet" href="./stylesheets/index.css">
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- basic jquery -->
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"
+  ></script>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script type="text/javascript" src="./../../../template.js"></script>
+  </head>
+
+  <body id="BG">
+        
+        
+      <script>
+      var moji= ["一","二","三","四","五","六","七","八","九"];
+      // var enemy_data= new Array(8).fill(0);  
+      // var my_data= new Array(8).fill(0); // 1:歩 2:香 3:桂 4:銀 5:金 6:角 7:飛
+      </script>
+      <header>
+          <!-- ここにheaderを表示
+          -->
+        <script>header("./../../../shared/");</script>
+        </header>
+        <aside>
+          <!-- <script>aside("./../../../shared/");</script> -->
+        </aside>
+        <main>
+          <!-- ここに各コンテンツをひょうじ -->
+          <div id="shougi">
+            <!-- とったコマ配置相手 -->
+              <!-- <div class="enemy_space">
+                <li
+                  class="enemy_pieces"
+                  v-for="(val,key) in enemy_data"
+                >
+                   <span class="e_koma">{{val}}</span> 
+                </li>
+              </div> -->
+              <ul class="bord">
+                
+                <li
+                  class="bord__cell"
+                  v-for="(n,index) in 100"
+                >
+                
+                <!-- <script>var i= parseInt(index/10); var j= index%10; </script> -->
+                   <!-- v-bind:style="transform: scale(bord.CellList[parseInt(index/10)][index%10].player, -1);"  -->
+                  <div v-if="parseInt(index/10)!=9 && index%10!=9"
+                      v-on:click="bord.changeToRed(parseInt(index/10),index%10);"
+                      class="picc"
+                    >
+                    <!-- 自コマ -->
+                    <img class="pic" 
+                      v-if="bord.CellList[parseInt(index/10)][index%10].player==1"
+                      v-bind:src="bord.CellList[parseInt(index/10)][index%10].picture" 
+                    /> 
+                    <!-- 相手コマ -->
+                    <img class="pic" 
+                      v-if="bord.CellList[parseInt(index/10)][index%10].player==-1"
+                      v-bind:src="bord.CellList[parseInt(index/10)][index%10].picture" 
+                      style="transform: scale(-1,-1);"
+                    /> 
+                    <!-- 選ぶ候補レッド -->
+                    <div class="redCover"
+                      v-if= "bord.cellList[parseInt(index/10)][index%10].red==1"
+                    >
+                    <span></span>
+                    </div>
+                  </div>
+
+                  <span v-if="index%10==9"class="tatemoji">{{moji[parseInt(index/10)]}}</span>
+                  <span v-if="index!=9 && parseInt(index/10)==0" class="yokomoji"> {{9-index%10}}</span>
+                  
+                  <div class="pp">
+                    <div class="tate">
+                      <div class="tate_main"
+                          v-if="parseInt(index/10)!=0 && parseInt(index/10)!=9">
+                      </div>
+                      <div class="tate_uphalf"
+                          v-if="parseInt(index/10)==0">
+                  
+                      </div>
+                      <div class="tate_downhalf"
+                          v-if="parseInt(index/10)==9">
+                      </div>
+                    </div>
+
+                    <div class="yoko">
+                      <div class="yoko_main"
+                         v-if="index%10!=0 && index%10!=9">
+                      </div>
+                      <div class="yoko_lefthalf"
+                          v-if="index%10==0">
+                      </div>
+                      <div class= "yoko_righthalf"
+                           v-if= "index%10==9">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- <span class="cell" v-if="cell.stone==1">○</span>白 -->
+                  <!-- <span class="cell" v-if="cell.stone==2">●️</span>黒 -->
+                  <!-- <span class="db">{{ parseInt(index/10) }}</span> -->
+                  <!-- <span v-if="parseInt(index/10)!=9 && index%10!=9">{{ bord.cellList[parseInt(index/10)][index%10].type }}</span> -->
+                  <!-- <span>{{bord.state}}</span> -->
+                </li>
+              </ul>
+            <!-- とったコマ配置自分 -->
+              <!-- <div class="my_space">
+                <li
+                  class="my_pieces"
+                  v-for="(val,key) in my_data"
+                >
+                   <span class="m_koma">{{val}}</span> 
+                </li>
+              </div>
+             -->
+              <div class="ren" v-if="fin==1">
+                <span v-if="ss==2 && reason==1">黒の勝ち！！（黒：五連）</span>
+                <span v-if="ss==1 && reason==1">白の勝ち！！（白：五連）</span>
+                <span v-if="ss==2 && reason==2">白の勝ち！！ (黒禁手：長連)</span>
+                <span v-if="ss==2 && reason==3">白の勝ち！！ (黒禁手：三三)</span>
+                <span v-if="ss==2 && reason==4">白の勝ち！！ (黒禁手：四四)</span>
+              </div>
+              <div><input v-if="bord.serve==1" class="change" type="button" value="後攻に変更" v-on:click="bord= new Bord(-1)"></div>
+              <div><input v-if="bord.serve==-1" class="change" type="button" value="先攻に変更" v-on:click="bord= new Bord(1)"></div>
+              <div v-if="fin==1"><input class="retry" type="button" value="もう一度" onclick="window.location.reload();" /></div>
+              <div v-if="fin==0"><input class="retire" type="button" value="中断" onclick="window.location.reload();" /></div>
+              <!-- <button v-on:click="reverseMessage">Reverse Message</button> -->
+            </div>
+        </main>
+ 
+ <!-- 0:コマ無し1:歩 2:香 3:桂 4:銀 5:金 6:角 7:飛 8:王- -->
+    
+    <script>
+      class Piece{
+        constructor(i,j,s){
+          this.player;
+          this.type;
+          this.picture;
+          this.red=0; // 候補の色変換
+          // this.choice=0; //　クリックされたコマ
+          (i<3)?this.player=-1:((i>5)?this.player=1:this.player=0);
+          if(i==1 || i==7) this.player=0;
+          if(i==1&&(j==1||j==7)) this.player=-1;
+          if(i==7&&(j==1||j==7)) this.player=1;
+
+          if(i==2 || i==6) { this.type=1; this.picture='./../../../image/koma/fuhyou.png';}
+          else if((i==0 || i==8) && (j==0 || j==8)) { this.type=2; this.picture='./../../../image/koma/kyousya.png';}
+          else if((i==0 || i==8) && (j==1 || j==7)) { this.type=3; this.picture='./../../../image/koma/keima.png';}
+          else if((i==0 || i==8) && (j==2 || j==6)) { this.type=4; this.picture='./../../../image/koma/ginsyou.png';}
+          else if((i==0 || i==8) && (j==3 || j==5)) { this.type=5; this.picture='./../../../image/koma/kinsyou.png';}
+          else if((i==7 && j==1) || (i==1 && j==7)) { this.type=6; this.picture='./../../../image/koma/kakugyou.png';}
+          else if((i==7 && j==7) || (i==1 && j==1)) { this.type=7; this.picture='./../../../image/koma/hisya.png';}
+          else if(i==0 && j==4) {
+            this.type=8;
+            if(s==1) this.picture='./../../../image/koma/gyokusyou.png';
+            else this.picture='./../../../image/koma/ousyou.png';
+          }
+          else if(i==8 && j==4){
+            this.type= 8;
+            if(s==1) this.picture='./../../../image/koma/ousyou.png';
+            else this.picture='./../../../image/koma/gyokusyou.png';
+          }
+          else{ this.type=0; this.picture="./../../../image/koma/non.png"; }
+        }
+        redCheck(i,j,h,w,tp,tn){
+          let add= tn;
+          if(tp==1){ //歩
+            if(i==h-add && j==w) this.red= 1;
+            else this.red= 0;
+          }else if(tp==2){ //香
+            if(j==w && (h-i)*add>0){
+              for(let t=h-add; t>i; t-=add){
+                if(bord.cellList[t][w].player!=0) {this.red=0;return;}
+              }
+              this.red=1;
+            }else this.red=0;
+          }else if(tp==3){ //桂
+            if(i==h-add*2 && Math.abs(j-w)==1) this.red=1;
+            else this.red=0;
+          }else if(tp==4){ //銀
+            if((i==h-add && Math.abs(j-w)<=1) || (i==h+add && Math.abs(j-w)==1)) this.red=1;
+            else this.red=0;
+          }else if(tp==5){ //金
+            if((i==h-add && Math.abs(j-w)<=1) || (i==h && Math.abs(j-w)==1) || (i==h+add && j==w)) this.red=1;
+            else this.red=0;
+          }else if(tp==6){ //角
+            if(Math.abs(i-h)==Math.abs(j-w)){
+              let a= (i-h)/Math.abs(i-h), b= (j-w)/Math.abs(j-w);
+              for(let t=1; t<Math.abs(i-h); t++){
+                if(bord.cellList[h+parseInt(t*a)][w+parseInt(t*b)].player!=0) {this.red=0; return;}
+              }
+              this.red=1;
+            }else this.red=0;
+          }else if(tp==7){ //飛
+            if((i-h)*(j-w)==0){
+              let c= Math.max(Math.abs(i-h), Math.abs(j-w));
+              let a= (i-h)/c, b= (j-w)/c;
+              for(let t=1; t<c; t++){
+                if(bord.cellList[h+parseInt(t*a)][w+parseInt(t*b)].player!=0) {this.red=0; return;}
+              }
+              this.red=1;
+            }else this.red=0;
+          }else if(tp==8){ //王
+            if(Math.abs(i-h)<=1 && Math.abs(j-w)<=1) this.red=1;
+            else this.red=0;
+          }else this.red=0;
+        }
+      }
+      // class Stock{
+      //   constructor(p) {
+      //     this.player=p;
+      //     this.stockList= new Array(8).fill(0);
+      //   }
+      // }
+      class Bord {
+        // 9*9の盤面で,相手か自分か、なんのコマか
+        // が定義されている配列をつくる。
+        // 1次元？ 2次元?
+        constructor(s){
+          this.state=0; // 選ばれてない:0 選ばれてる:1
+          this.turn=s; // 1:自分 -1:相手
+          this.serve=s; //はじめ　1:先行 -1:後攻
+          this.H; // 今選んでる
+          this.W;　// 座標
+          this.cellList= new Array(9);
+          for(let i=0; i<9; i++){
+            this.cellList[i]= new Array(9);
+            for(let j=0; j<9; j++){
+              this.cellList[i][j]= new Piece(i,j,this.serve);
+            } 
+          }
+          // 取ったコマ
+          // 1:歩 2:香 3:桂 4:銀 5:金 6:角 7:飛
+          this.enemy_data= new Array(7).fill(0);  
+          this.my_data= new Array(7).fill(0);
+          // console.log(this.cellList);
+        }
+        get CellList() {
+          return this.cellList;
+        }
+        changeToRed(h,w){
+          let tp= this.CellList[h][w].type;
+          
+          //自分以外のますをタッチ(選択されていない状態で)
+          if(this.state==0){
+            if(this.CellList[h][w].player!=this.turn||this.CellList[h][w].player==0) return;
+            else{//自分のコマをタッチすると赤表示
+              for(let i=0; i<9; i++){
+                for(let j=0; j<9; j++){
+                  if(this.CellList[i][j].player!=this.turn) this.cellList[i][j].redCheck(i,j,h,w,tp,this.turn);
+                  else this.cellList[i][j].red= 0;
+                }
+              }
+              this.state=1;
+            }
+          }else{ // 選択されている状態
+            this.choiceToRed(h,w,tp);
+          }
+          this.H=h; this.W=w;
+        }
+        choiceToRed(h,w,tp){ 
+          if(this.cellList[h][w].red==1){ // 赤選択
+            for(let i=0; i<9; i++){
+              for(let j=0; j<9; j++){
+                this.cellList[i][j].red= 0;
+              }
+            }
+            console.log(tp);
+            if(tp==0){
+              let tmp=this.cellList[h][w];
+              this.cellList[h][w]= this.cellList[this.H][this.W];
+              this.cellList[this.H][this.W]= tmp;
+            }else{
+              if(this.turn==1){
+                this.my_data[tp-1]+=1;
+              }else{
+                this.enemy_data[tp-1]+=1;
+              }
+              this.cellList[h][w]= this.cellList[this.H][this.W];
+              this.cellList[this.H][this.W]= new Piece(4,4,this.serve);
+            }
+            this.turn*=-1;
+            this.state=0;
+          }else{ 
+            if(this.cellList[h][w].player==this.turn){ // 選んだ状態で自分のコマタッチで赤更新
+              for(let i=0; i<9; i++){
+                for(let j=0; j<9; j++){
+                  if(this.CellList[i][j].player!=this.turn) this.cellList[i][j].redCheck(i,j,h,w,tp,this.turn);
+                  else this.cellList[i][j].red= 0;
+                }
+              }
+            }else{ // 選んでいる状態で自分のコマ以外をタッチすると赤消える
+              for(let i=0; i<9; i++){
+                for(let j=0; j<9; j++){
+                  this.cellList[i][j].red= 0;
+                }
+              }
+              this.state=0;
+            }
+          }
+        }
+      }
+      class Bot {
+        constructer(bord) {
+          this.bord = bord;
+        }
+      }
+
+      bord = new Bord(1);
+      // bord.reset(bord,1);
+      // var turn=1; // 自分:1 相手:-1
+
+      let fin= 0;
+      let reason= 0;
+      let ss= 0;
+      let set;
+      let long= 0;
+      bot = new Bot();
+      
+      // const judge= new Judge();
+      const shougi = new Vue({
+        el: "#shougi",
+        data: {
+          bord: bord,
+          bot: bot
+        },
+        methods: {
+          reverseMessage: function() {
+            this.message = this.message
+              .split("")
+              .reverse()
+              .join("");
+          }
+        }
+      });
+    </script>
+    <script>footer("./../../../shared/");</script>
+    <link>
+    </link>
+    
+  </body>
+</html>

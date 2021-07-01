@@ -1,0 +1,8 @@
+{
+  "name": "",
+  "version": "",
+  "description": "My Product ひらけ！",
+  "devDependencies": {
+    "webpack-cli": "^3.3.2"
+  }
+}
